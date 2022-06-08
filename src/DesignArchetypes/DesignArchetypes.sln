@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Party", "Party\ItEmperor.Party\ItEmperor.Party.csproj", "{6519C23A-1548-45F5-BD8F-DA63BA21AE09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Party", "Party", "{93CAAB58-0926-4C8C-8202-70A7D949E443}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Party.Dal", "Party\ItEmperor.Party.Dal\ItEmperor.Party.Dal.csproj", "{DC32E117-A13B-4652-AA78-6E35BCC25C1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Party.Tests", "Party\ItEmperor.Party.Tests\ItEmperor.Party.Tests.csproj", "{102C17D3-AC3A-4C2B-AC4E-079C3632E228}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6519C23A-1548-45F5-BD8F-DA63BA21AE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6519C23A-1548-45F5-BD8F-DA63BA21AE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6519C23A-1548-45F5-BD8F-DA63BA21AE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6519C23A-1548-45F5-BD8F-DA63BA21AE09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC32E117-A13B-4652-AA78-6E35BCC25C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC32E117-A13B-4652-AA78-6E35BCC25C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC32E117-A13B-4652-AA78-6E35BCC25C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC32E117-A13B-4652-AA78-6E35BCC25C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6519C23A-1548-45F5-BD8F-DA63BA21AE09} = {93CAAB58-0926-4C8C-8202-70A7D949E443}
+		{DC32E117-A13B-4652-AA78-6E35BCC25C1A} = {93CAAB58-0926-4C8C-8202-70A7D949E443}
+		{102C17D3-AC3A-4C2B-AC4E-079C3632E228} = {93CAAB58-0926-4C8C-8202-70A7D949E443}
+	EndGlobalSection
+EndGlobal
