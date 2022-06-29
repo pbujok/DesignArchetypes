@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\ItEmperor.Shared\ItEmperor.Shared.csproj" />
       <ProjectReference Include="..\ItEmperor.Party\ItEmperor.Party.csproj" />
     </ItemGroup>
 

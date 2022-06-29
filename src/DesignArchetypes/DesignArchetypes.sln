@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Party.Dal", "Part
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Party.Tests", "Party\ItEmperor.Party.Tests\ItEmperor.Party.Tests.csproj", "{102C17D3-AC3A-4C2B-AC4E-079C3632E228}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Shared", "ItEmperor.Shared\ItEmperor.Shared.csproj", "{0B34091E-5C03-4812-9382-A9550AE3302D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{102C17D3-AC3A-4C2B-AC4E-079C3632E228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B34091E-5C03-4812-9382-A9550AE3302D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B34091E-5C03-4812-9382-A9550AE3302D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B34091E-5C03-4812-9382-A9550AE3302D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B34091E-5C03-4812-9382-A9550AE3302D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6519C23A-1548-45F5-BD8F-DA63BA21AE09} = {93CAAB58-0926-4C8C-8202-70A7D949E443}
