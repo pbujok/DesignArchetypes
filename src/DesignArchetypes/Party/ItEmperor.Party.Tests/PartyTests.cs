@@ -12,8 +12,8 @@ public class PartyTests
         var company = new Organization(new TaxId("1234"), "Cesarz Id Sp.z o.o.");
 
         using var context = new PartyDbContext();
-        context.Set<Party>().Add(person);
-        context.Set<Party>().Add(company);
+        context.Set<Person>().Add(person);
+        context.Set<Organization>().Add(company);
         context.SaveChanges();
     }
 
@@ -25,8 +25,8 @@ public class PartyTests
         
 
         using var context = new PartyDbContext();
-        context.Set<Party>().Add(person);
-        context.Set<Party>().Add(company);
+        context.Set<Person>().Add(person);
+        context.Set<Organization>().Add(company);
         context.SaveChanges();
     }
 }

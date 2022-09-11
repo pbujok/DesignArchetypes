@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItEmperor.Party.Tests.Configurations;
 
-public class PartyConfiguration : IEntityTypeConfiguration<Party>
+public class PersonConfiguration : PartyConfigurationBase<Person>
 {
-    public void Configure(EntityTypeBuilder<Party> builder)
+    public void Configure(EntityTypeBuilder<Person> builder)
     {
+        base.Configure(builder);
+
         builder.ToTable("Party")
             .HasDiscriminator(x => x.PartyType)
             .HasValue<Person>(1)
@@ -16,5 +18,6 @@ public class PartyConfiguration : IEntityTypeConfiguration<Party>
 
         builder.Property(x => x.Id)
             .HasConversion(x => x.Value, guid => new PartyId(guid));
+
     }
 }

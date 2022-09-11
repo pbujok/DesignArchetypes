@@ -17,4 +17,6 @@ public abstract class Party
     public string Name { get; }
 
     public int PartyType { get; }
+
+    public List<Address> Addresses { get; set; }
 }

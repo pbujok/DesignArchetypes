@@ -12,7 +12,7 @@ public class Organization : Party
     {
         TaxId = taxId;
     }
-
+    
     public TaxId TaxId { get; set; }
     
     public ICollection<Position> Positions { get; set; }

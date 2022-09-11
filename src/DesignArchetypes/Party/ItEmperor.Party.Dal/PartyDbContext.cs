@@ -7,7 +7,6 @@ public class PartyDbContext : DbContext
 {
     public PartyDbContext() : base()
     {
-        
     }
     
     public PartyDbContext(DbContextOptions options) : base(options)
