@@ -12,10 +12,5 @@ public class PartyConfigurationBase<TParty> : IEntityTypeConfiguration<TParty>
 
         builder.Property(x => x.Id)
             .HasConversion(x => x.Value, guid => new PartyId(guid));
-        
-        builder.OwnsMany(x=>x.Addresses, navigationBuilder =>
-        {
-            navigationBuilder.HasKey(x => x.Id);
-        });
     }
 }
