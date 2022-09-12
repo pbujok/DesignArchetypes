@@ -6,11 +6,11 @@ public class Position
     {
     }
 
-    public Position(string description, int haurSalaryFrom, int hourSalaryTo)
+    public Position(string description, int hourSalaryFrom, int hourSalaryTo)
     {
         Id = Guid.NewGuid();
         Description = description;
-        HaurSalaryFrom = haurSalaryFrom;
+        HourSalaryFrom = hourSalaryFrom;
         HourSalaryTo = hourSalaryTo;
     }
 
@@ -18,7 +18,7 @@ public class Position
 
     public string Description { get; private set; }
 
-    public int HaurSalaryFrom { get; private set; }
+    public int HourSalaryFrom { get; private set; }
 
     public int HourSalaryTo { get; private set; }
 
