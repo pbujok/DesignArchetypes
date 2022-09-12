@@ -68,7 +68,7 @@ namespace ItEmperor.Party.Tests.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HaurSalaryFrom")
+                    b.Property<int>("HourSalaryFrom")
                         .HasColumnType("int");
 
                     b.Property<int>("HourSalaryTo")

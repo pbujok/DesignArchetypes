@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItEmperor.Party.Tests.Migrations
 {
     [DbContext(typeof(PartyDbContext))]
-    [Migration("20220911181352_Init")]
+    [Migration("20220912174728_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,7 @@ namespace ItEmperor.Party.Tests.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HaurSalaryFrom")
+                    b.Property<int>("HourSalaryFrom")
                         .HasColumnType("int");
 
                     b.Property<int>("HourSalaryTo")

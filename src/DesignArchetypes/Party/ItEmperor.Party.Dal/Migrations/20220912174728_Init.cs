@@ -63,7 +63,7 @@ namespace ItEmperor.Party.Tests.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HaurSalaryFrom = table.Column<int>(type: "int", nullable: false),
+                    HourSalaryFrom = table.Column<int>(type: "int", nullable: false),
                     HourSalaryTo = table.Column<int>(type: "int", nullable: false),
                     OrganizationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
