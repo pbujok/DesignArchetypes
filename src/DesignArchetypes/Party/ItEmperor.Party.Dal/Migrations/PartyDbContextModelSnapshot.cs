@@ -142,24 +142,69 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("SimpleEmployment");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
+            modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TaxId")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organization");
+                    b.ToTable("Party");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Party");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Relationship.PartyRelationship", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("PartyAId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PartyBId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PartyAId");
+
+                    b.HasIndex("PartyBId");
+
+                    b.ToTable("PartyRelationship");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Party");
+
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Party", (string)null);
+
+                    b.HasDiscriminator().HasValue("Organization");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Person.Person", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasBaseType("ItEmperor.Party.Party");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -169,9 +214,9 @@ namespace ItEmperor.Party.Tests.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.ToTable("Party", (string)null);
 
-                    b.ToTable("Person");
+                    b.HasDiscriminator().HasValue("Person");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Address.Simple.SimpleAddress", b =>
@@ -212,18 +257,69 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasOne("ItEmperor.Party.Organization.Organization", "Organization")
                         .WithMany()
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ItEmperor.Party.Person.Person", "Person")
                         .WithMany("Employments")
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Organization");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Party", b =>
+                {
+                    b.OwnsMany("ItEmperor.Party.TelephoneNumber", "TelephoneNumbers", b1 =>
+                        {
+                            b1.Property<Guid>("PartyId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("PartyId", "Id");
+
+                            b1.ToTable("TelephoneNumber");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PartyId");
+                        });
+
+                    b.Navigation("TelephoneNumbers");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Relationship.PartyRelationship", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Party", "PartyA")
+                        .WithMany("PartyRelationshipsA")
+                        .HasForeignKey("PartyAId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ItEmperor.Party.Party", "PartyB")
+                        .WithMany("PartyRelationshipsB")
+                        .HasForeignKey("PartyBId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("PartyA");
+
+                    b.Navigation("PartyB");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
@@ -297,6 +393,13 @@ namespace ItEmperor.Party.Tests.Migrations
                         });
 
                     b.Navigation("Placements");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Party", b =>
+                {
+                    b.Navigation("PartyRelationshipsA");
+
+                    b.Navigation("PartyRelationshipsB");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>

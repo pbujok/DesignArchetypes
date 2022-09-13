@@ -10,28 +10,44 @@ namespace ItEmperor.Party.Tests.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Organization",
+                name: "Party",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TaxId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaxId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Organization", x => x.Id);
+                    table.PrimaryKey("PK_Party", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Person",
+                name: "PartyRelationship",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PartyAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartyBId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Person", x => x.Id);
+                    table.PrimaryKey("PK_PartyRelationship", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartyRelationship_Party_PartyAId",
+                        column: x => x.PartyAId,
+                        principalTable: "Party",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PartyRelationship_Party_PartyBId",
+                        column: x => x.PartyBId,
+                        principalTable: "Party",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -50,9 +66,9 @@ namespace ItEmperor.Party.Tests.Migrations
                 {
                     table.PrimaryKey("PK_Placement", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Placement_Organization_OrganizationId",
+                        name: "FK_Placement_Party_OrganizationId",
                         column: x => x.OrganizationId,
-                        principalTable: "Organization",
+                        principalTable: "Party",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -71,9 +87,9 @@ namespace ItEmperor.Party.Tests.Migrations
                 {
                     table.PrimaryKey("PK_Position", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Position_Organization_OrganizationId",
+                        name: "FK_Position_Party_OrganizationId",
                         column: x => x.OrganizationId,
-                        principalTable: "Organization",
+                        principalTable: "Party",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -94,9 +110,9 @@ namespace ItEmperor.Party.Tests.Migrations
                 {
                     table.PrimaryKey("PK_SimpleAddress", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SimpleAddress_Person_PersonId",
+                        name: "FK_SimpleAddress_Party_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Person",
+                        principalTable: "Party",
                         principalColumn: "Id");
                 });
 
@@ -115,15 +131,34 @@ namespace ItEmperor.Party.Tests.Migrations
                 {
                     table.PrimaryKey("PK_SimpleEmployment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SimpleEmployment_Organization_OrganizationId",
+                        name: "FK_SimpleEmployment_Party_OrganizationId",
                         column: x => x.OrganizationId,
-                        principalTable: "Organization",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Party",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_SimpleEmployment_Person_PersonId",
+                        name: "FK_SimpleEmployment_Party_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Person",
+                        principalTable: "Party",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TelephoneNumber",
+                columns: table => new
+                {
+                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TelephoneNumber", x => new { x.PartyId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_TelephoneNumber_Party_PartyId",
+                        column: x => x.PartyId,
+                        principalTable: "Party",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -142,9 +177,9 @@ namespace ItEmperor.Party.Tests.Migrations
                 {
                     table.PrimaryKey("PK_PositionAssignment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PositionAssignment_Person_PersonId",
+                        name: "FK_PositionAssignment_Party_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Person",
+                        principalTable: "Party",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PositionAssignment_Position_PositionId",
@@ -153,6 +188,16 @@ namespace ItEmperor.Party.Tests.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyRelationship_PartyAId",
+                table: "PartyRelationship",
+                column: "PartyAId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyRelationship_PartyBId",
+                table: "PartyRelationship",
+                column: "PartyBId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Placement_OrganizationId",
@@ -193,6 +238,9 @@ namespace ItEmperor.Party.Tests.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "PartyRelationship");
+
+            migrationBuilder.DropTable(
                 name: "Placement");
 
             migrationBuilder.DropTable(
@@ -205,13 +253,13 @@ namespace ItEmperor.Party.Tests.Migrations
                 name: "SimpleEmployment");
 
             migrationBuilder.DropTable(
+                name: "TelephoneNumber");
+
+            migrationBuilder.DropTable(
                 name: "Position");
 
             migrationBuilder.DropTable(
-                name: "Person");
-
-            migrationBuilder.DropTable(
-                name: "Organization");
+                name: "Party");
         }
     }
 }

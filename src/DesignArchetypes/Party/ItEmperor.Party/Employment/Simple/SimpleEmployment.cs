@@ -1,4 +1,6 @@
-﻿namespace ItEmperor.Party.Employment.Simple;
+﻿using System;
+
+namespace ItEmperor.Party.Employment.Simple;
 
 public class SimpleEmployment
 {

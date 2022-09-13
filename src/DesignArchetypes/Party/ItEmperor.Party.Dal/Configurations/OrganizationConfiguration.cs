@@ -1,5 +1,6 @@
 ﻿using ItEmperor.Party.Address.Complex;
 using ItEmperor.Party.Organization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItEmperor.Party.Tests.Configurations;
@@ -9,6 +10,7 @@ public class OrganizationConfiguration : PartyConfigurationBase<Organization.Org
     public override void Configure(EntityTypeBuilder<Organization.Organization> builder)
     {
         base.Configure(builder);
+        
         builder.Property(x => x.TaxId)
             .HasConversion(x => x.Value, val => new TaxId(val));
         

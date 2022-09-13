@@ -1,4 +1,6 @@
-﻿namespace ItEmperor.Party.Address.Simple;
+﻿using System;
+
+namespace ItEmperor.Party.Address.Simple;
 
 public class SimpleAddress
 {

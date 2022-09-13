@@ -1,4 +1,6 @@
-﻿namespace ItEmperor.Party.Address.Complex;
+﻿using System;
+
+namespace ItEmperor.Party.Address.Complex;
 
 public class GeographicLocation
 {

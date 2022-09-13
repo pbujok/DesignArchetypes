@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using ItEmperor.Party.Address.Complex;
 using ItEmperor.Party.Organization;
+using ItEmperor.Party.Relationship;
 using Xunit;
 
 namespace ItEmperor.Party.Tests;
@@ -16,7 +17,10 @@ public class PartyTests
     public void Parties_create()
     {
         var person = new Person.Person("Adam", "Mickiewicz");
+        person.AddTelephone("Mobile", "0700880777");
         var company = new Organization.Organization(new TaxId("1234"), "Cesarz Id Sp.z o.o.");
+        company.AddTelephone("Office", "555 555 22");
+        company.AddTelephone("Boss", "021 333 777");
 
         using var context = new PartyDbContext();
         context.Set<Person.Person>().Add(person);
@@ -30,11 +34,26 @@ public class PartyTests
         var person = new Person.Person("Juliusz", "Słowacki");
         var company = new Organization.Organization(new TaxId("1235"), "Wacki S.A.");
 
+        person.AddSimpleEmployment(company, _dateFrom, _dateTo, "Writer");
+        
         using var context = new PartyDbContext();
         context.Set<Person.Person>().Add(person);
         context.Set<Organization.Organization>().Add(company);
+        context.SaveChanges();
+    }
+    
+    [Fact]
+    public void Parties_Relationship_B2BExample()
+    {
+        var company = new Organization.Organization(new TaxId("1235"), "Wacki S.A.");
+        var contractor = new Organization.Organization(new TaxId("1111"), "Monstart LTD");
 
-        person.AddSimpleEmployment(company, _dateFrom, _dateTo, "Writer");
+        var relation = new PartyRelationship(company, contractor, _dateFrom, _dateTo, "Contractor");
+        
+        using var context = new PartyDbContext();
+        context.Set<Organization.Organization>().Add(contractor);
+        context.Set<Organization.Organization>().Add(company);
+        context.Set<PartyRelationship>().Add(relation);
         context.SaveChanges();
     }
 

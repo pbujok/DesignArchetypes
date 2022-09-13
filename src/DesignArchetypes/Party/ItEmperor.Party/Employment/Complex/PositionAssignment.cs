@@ -1,4 +1,6 @@
-﻿namespace ItEmperor.Party.Employment.Complex;
+﻿using System;
+
+namespace ItEmperor.Party.Employment.Complex;
 
 public class PositionAssignment
 {
