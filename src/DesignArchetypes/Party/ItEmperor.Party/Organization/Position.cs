@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ItEmperor.Party.Employment.Complex;
+﻿namespace ItEmperor.Party.Organization;
 
 public class Position
 {
@@ -8,12 +6,13 @@ public class Position
     {
     }
 
-    public Position(string description, int hourSalaryFrom, int hourSalaryTo)
+    public Position(string description, int hourSalaryFrom, int hourSalaryTo, Organization organization)
     {
         Id = Guid.NewGuid();
         Description = description;
         HourSalaryFrom = hourSalaryFrom;
         HourSalaryTo = hourSalaryTo;
+        Organization = organization;
     }
 
     public Guid Id { get; }
@@ -24,5 +23,5 @@ public class Position
 
     public int HourSalaryTo { get; private set; }
 
-    public Organization.Organization Organization { get; private set; }
+    public Organization Organization { get; private set; }
 }

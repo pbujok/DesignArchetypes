@@ -1,13 +1,14 @@
-﻿using ItEmperor.Party.Employment.Complex;
+﻿using ItEmperor.Party.Relationship.Employment;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace ItEmperor.Party.Tests.Configurations;
 
-public class PositionAssignmentConfiguration : IEntityTypeConfiguration<PositionAssignment>
+public class PositionAssignmentConfiguration : PartyRelationshipConfigrationBase<PositionAssignmentEmployment>
 {
-    public void Configure(EntityTypeBuilder<PositionAssignment> builder)
+    public void Configure(EntityTypeBuilder<PositionAssignmentEmployment> builder)
     {
-        builder.HasKey(x => x.Id);
+        base.Configure(builder);
     }
 }

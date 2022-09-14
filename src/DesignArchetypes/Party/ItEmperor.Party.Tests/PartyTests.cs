@@ -3,6 +3,7 @@ using System.Linq;
 using ItEmperor.Party.Address.Complex;
 using ItEmperor.Party.Organization;
 using ItEmperor.Party.Relationship;
+using ItEmperor.Party.Relationship.Employment;
 using Xunit;
 
 namespace ItEmperor.Party.Tests;
@@ -33,25 +34,11 @@ public class PartyTests
     {
         var person = new Person.Person("Juliusz", "Słowacki");
         var company = new Organization.Organization(new TaxId("1235"), "Wacki S.A.");
-
-        person.AddSimpleEmployment(company, _dateFrom, _dateTo, "Writer");
+        
+        var relation = new SimpleEmployment(company, person, _dateFrom, _dateTo, "Writer");
         
         using var context = new PartyDbContext();
         context.Set<Person.Person>().Add(person);
-        context.Set<Organization.Organization>().Add(company);
-        context.SaveChanges();
-    }
-    
-    [Fact]
-    public void Parties_Relationship_B2BExample()
-    {
-        var company = new Organization.Organization(new TaxId("1235"), "Wacki S.A.");
-        var contractor = new Organization.Organization(new TaxId("1111"), "Monstart LTD");
-
-        var relation = new PartyRelationship(company, contractor, _dateFrom, _dateTo, "Contractor");
-        
-        using var context = new PartyDbContext();
-        context.Set<Organization.Organization>().Add(contractor);
         context.Set<Organization.Organization>().Add(company);
         context.Set<PartyRelationship>().Add(relation);
         context.SaveChanges();

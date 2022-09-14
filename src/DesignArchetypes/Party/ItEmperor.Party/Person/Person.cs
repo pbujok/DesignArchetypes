@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using ItEmperor.Party.Address.Simple;
-using ItEmperor.Party.Employment.Complex;
-using ItEmperor.Party.Employment.Simple;
+using ItEmperor.Party.Organization;
+using ItEmperor.Party.Relationship.Employment;
 
 namespace ItEmperor.Party.Person;
 
@@ -21,10 +21,6 @@ public class Person : Party
     public string FirstName { get; private set; }
 
     public string LastName { get; private set; }
-
-    public ICollection<SimpleEmployment> Employments { get; private set; } = new List<SimpleEmployment>();
-
-    public ICollection<PositionAssignment> PositionAssignments { get; private set; } = new List<PositionAssignment>();
     
     public List<SimpleAddress> Addresses { get; set; } = new List<SimpleAddress>();
     
@@ -47,20 +43,8 @@ public class Person : Party
         });
     }
     
-    public void AddSimpleEmployment(Organization.Organization organization, DateTimeOffset from, DateTimeOffset to, string type)
-    {
-        Employments.Add(new SimpleEmployment()
-        {
-            Id = Guid.NewGuid(),
-            Organization = organization,
-            EndDate = to,
-            StartDate = from,
-            Type = type
-        });
-    }
-
     public void AddComplexEmployment(Position position, DateTimeOffset from, DateTimeOffset to)
     {
-        PositionAssignments.Add(new PositionAssignment(from, to, position));
+        PartyRelationshipsA.Add(new PositionAssignmentEmployment(position.Organization, this, from, to, position));
     }
 }

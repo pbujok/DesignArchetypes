@@ -25,32 +25,6 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PartyRelationship",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PartyAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PartyBId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PartyRelationship", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PartyRelationship_Party_PartyAId",
-                        column: x => x.PartyAId,
-                        principalTable: "Party",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PartyRelationship_Party_PartyBId",
-                        column: x => x.PartyBId,
-                        principalTable: "Party",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Placement",
                 columns: table => new
                 {
@@ -117,32 +91,6 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SimpleEmployment",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrganizationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SimpleEmployment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SimpleEmployment_Party_OrganizationId",
-                        column: x => x.OrganizationId,
-                        principalTable: "Party",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SimpleEmployment_Party_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Party",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TelephoneNumber",
                 columns: table => new
                 {
@@ -164,25 +112,33 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PositionAssignment",
+                name: "PartyRelationship",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartData = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    PositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PartyAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartyBId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PostName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PositionAssignment", x => x.Id);
+                    table.PrimaryKey("PK_PartyRelationship", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PositionAssignment_Party_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_PartyRelationship_Party_PartyAId",
+                        column: x => x.PartyAId,
                         principalTable: "Party",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PositionAssignment_Position_PositionId",
+                        name: "FK_PartyRelationship_Party_PartyBId",
+                        column: x => x.PartyBId,
+                        principalTable: "Party",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PartyRelationship_Position_PositionId",
                         column: x => x.PositionId,
                         principalTable: "Position",
                         principalColumn: "Id",
@@ -200,6 +156,11 @@ namespace ItEmperor.Party.Tests.Migrations
                 column: "PartyBId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PartyRelationship_PositionId",
+                table: "PartyRelationship",
+                column: "PositionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Placement_OrganizationId",
                 table: "Placement",
                 column: "OrganizationId");
@@ -210,28 +171,8 @@ namespace ItEmperor.Party.Tests.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PositionAssignment_PersonId",
-                table: "PositionAssignment",
-                column: "PersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PositionAssignment_PositionId",
-                table: "PositionAssignment",
-                column: "PositionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SimpleAddress_PersonId",
                 table: "SimpleAddress",
-                column: "PersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SimpleEmployment_OrganizationId",
-                table: "SimpleEmployment",
-                column: "OrganizationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SimpleEmployment_PersonId",
-                table: "SimpleEmployment",
                 column: "PersonId");
         }
 
@@ -244,13 +185,7 @@ namespace ItEmperor.Party.Tests.Migrations
                 name: "Placement");
 
             migrationBuilder.DropTable(
-                name: "PositionAssignment");
-
-            migrationBuilder.DropTable(
                 name: "SimpleAddress");
-
-            migrationBuilder.DropTable(
-                name: "SimpleEmployment");
 
             migrationBuilder.DropTable(
                 name: "TelephoneNumber");

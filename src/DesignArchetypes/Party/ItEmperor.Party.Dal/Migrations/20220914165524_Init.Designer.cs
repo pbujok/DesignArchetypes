@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItEmperor.Party.Tests.Migrations
 {
     [DbContext(typeof(PartyDbContext))]
-    [Migration("20220913193215_Init")]
+    [Migration("20220914165524_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("SimpleAddress");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Employment.Complex.Position", b =>
+            modelBuilder.Entity("ItEmperor.Party.Organization.Position", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,64 +86,6 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("Position");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Employment.Complex.PositionAssignment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("PersonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PositionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("StartData")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.HasIndex("PositionId");
-
-                    b.ToTable("PositionAssignment");
-                });
-
-            modelBuilder.Entity("ItEmperor.Party.Employment.Simple.SimpleEmployment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid>("OrganizationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PersonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrganizationId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("SimpleEmployment");
-                });
-
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.Property<Guid>("Id")
@@ -166,6 +108,10 @@ namespace ItEmperor.Party.Tests.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset?>("EndDate")
                         .HasColumnType("datetimeoffset");
 
@@ -178,10 +124,6 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PartyAId");
@@ -189,6 +131,8 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasIndex("PartyBId");
 
                     b.ToTable("PartyRelationship");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PartyRelationship");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
@@ -221,6 +165,33 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("Person");
                 });
 
+            modelBuilder.Entity("ItEmperor.Party.Relationship.Employment.PositionAssignmentEmployment", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Relationship.PartyRelationship");
+
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("PartyRelationship", (string)null);
+
+                    b.HasDiscriminator().HasValue("PositionAssignmentEmployment");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Relationship.Employment.SimpleEmployment", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Relationship.PartyRelationship");
+
+                    b.Property<string>("PostName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("PartyRelationship", (string)null);
+
+                    b.HasDiscriminator().HasValue("SimpleEmployment");
+                });
+
             modelBuilder.Entity("ItEmperor.Party.Address.Simple.SimpleAddress", b =>
                 {
                     b.HasOne("ItEmperor.Party.Person.Person", null)
@@ -228,7 +199,7 @@ namespace ItEmperor.Party.Tests.Migrations
                         .HasForeignKey("PersonId");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Employment.Complex.Position", b =>
+            modelBuilder.Entity("ItEmperor.Party.Organization.Position", b =>
                 {
                     b.HasOne("ItEmperor.Party.Organization.Organization", "Organization")
                         .WithMany("Positions")
@@ -237,40 +208,6 @@ namespace ItEmperor.Party.Tests.Migrations
                         .IsRequired();
 
                     b.Navigation("Organization");
-                });
-
-            modelBuilder.Entity("ItEmperor.Party.Employment.Complex.PositionAssignment", b =>
-                {
-                    b.HasOne("ItEmperor.Party.Person.Person", null)
-                        .WithMany("PositionAssignments")
-                        .HasForeignKey("PersonId");
-
-                    b.HasOne("ItEmperor.Party.Employment.Complex.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Position");
-                });
-
-            modelBuilder.Entity("ItEmperor.Party.Employment.Simple.SimpleEmployment", b =>
-                {
-                    b.HasOne("ItEmperor.Party.Organization.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ItEmperor.Party.Person.Person", "Person")
-                        .WithMany("Employments")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Organization");
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
@@ -397,6 +334,17 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("Placements");
                 });
 
+            modelBuilder.Entity("ItEmperor.Party.Relationship.Employment.PositionAssignmentEmployment", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Organization.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+                });
+
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.Navigation("PartyRelationshipsA");
@@ -412,10 +360,6 @@ namespace ItEmperor.Party.Tests.Migrations
             modelBuilder.Entity("ItEmperor.Party.Person.Person", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("Employments");
-
-                    b.Navigation("PositionAssignments");
                 });
 #pragma warning restore 612, 618
         }

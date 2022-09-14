@@ -26,11 +26,6 @@ public abstract class Party
     
     public ICollection<PartyRelationship> PartyRelationshipsB { get; private set; } = new List<PartyRelationship>();
     
-    public void AddRelation(Party relation, string type, DateTimeOffset startDate, DateTimeOffset endDate)
-    {
-        PartyRelationshipsA.Add(new PartyRelationship(this, relation, startDate, endDate, type));
-    }
-    
     public void AddTelephone(string name, string telephone)
     {
         TelephoneNumbers.Add(new TelephoneNumber(name, telephone));
