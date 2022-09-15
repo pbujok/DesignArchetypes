@@ -184,6 +184,54 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("PartyRelationship");
                 });
 
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateFrom")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("DateTo")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("PartyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("RoleTypeId");
+
+                    b.ToTable("PartyRole", (string)null);
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Roles.RoleType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleType", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("RoleType");
+                });
+
             modelBuilder.Entity("ItEmperor.Party.Classifications.Organizations.IncomePartyType", b =>
                 {
                     b.HasBaseType("ItEmperor.Party.Classifications.PartyType");
@@ -257,6 +305,13 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("PartyRelationship", (string)null);
 
                     b.HasDiscriminator().HasValue("SimpleEmployment");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoleType", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Roles.RoleType");
+
+                    b.HasDiscriminator().HasValue("PartyRoleType");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Addresses.Simple.SimpleAddress", b =>
@@ -345,6 +400,25 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("PartyA");
 
                     b.Navigation("PartyB");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRole", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Party", "Party")
+                        .WithMany("PartyRoles")
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ItEmperor.Party.Roles.PartyRoleType", "RoleType")
+                        .WithMany()
+                        .HasForeignKey("RoleTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Party");
+
+                    b.Navigation("RoleType");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Classifications.Organizations.IncomePartyType", b =>
@@ -481,6 +555,8 @@ namespace ItEmperor.Party.Tests.Migrations
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.Navigation("PartyClassifications");
+
+                    b.Navigation("PartyRoles");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Organizations.Organization", b =>

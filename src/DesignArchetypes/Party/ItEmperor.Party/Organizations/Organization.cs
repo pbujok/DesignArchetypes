@@ -1,5 +1,6 @@
 ﻿using ItEmperor.Party.Addresses.Complex;
 using ItEmperor.Party.Classifications.Organizations;
+using ItEmperor.Party.Roles;
 
 namespace ItEmperor.Party.Organizations;
 

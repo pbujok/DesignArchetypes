@@ -2,7 +2,7 @@ using ItEmperor.Party.Classifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ItEmperor.Party.Tests.Configurations;
+namespace ItEmperor.Party.Tests.Configurations.Classifications;
 
 public class PartyClassificationConfiguration : IEntityTypeConfiguration<PartyClassification>
 {

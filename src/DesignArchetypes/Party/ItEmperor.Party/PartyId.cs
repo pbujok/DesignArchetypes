@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ItEmperor.Party;
+﻿namespace ItEmperor.Party;
 
 public record PartyId(Guid Value)
 {

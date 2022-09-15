@@ -42,6 +42,19 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RoleType",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Placement",
                 columns: table => new
                 {
@@ -155,6 +168,33 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PartyRole",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateFrom = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    DateTo = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartyRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartyRole_Party_PartyId",
+                        column: x => x.PartyId,
+                        principalTable: "Party",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PartyRole_RoleType_RoleTypeId",
+                        column: x => x.RoleTypeId,
+                        principalTable: "RoleType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PartyRelationship",
                 columns: table => new
                 {
@@ -215,6 +255,16 @@ namespace ItEmperor.Party.Tests.Migrations
                 column: "PositionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PartyRole_PartyId",
+                table: "PartyRole",
+                column: "PartyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyRole_RoleTypeId",
+                table: "PartyRole",
+                column: "RoleTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Placement_OrganizationId",
                 table: "Placement",
                 column: "OrganizationId");
@@ -239,6 +289,9 @@ namespace ItEmperor.Party.Tests.Migrations
                 name: "PartyRelationship");
 
             migrationBuilder.DropTable(
+                name: "PartyRole");
+
+            migrationBuilder.DropTable(
                 name: "Placement");
 
             migrationBuilder.DropTable(
@@ -252,6 +305,9 @@ namespace ItEmperor.Party.Tests.Migrations
 
             migrationBuilder.DropTable(
                 name: "Position");
+
+            migrationBuilder.DropTable(
+                name: "RoleType");
 
             migrationBuilder.DropTable(
                 name: "Party");
