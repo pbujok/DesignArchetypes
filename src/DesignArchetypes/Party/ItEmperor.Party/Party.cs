@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ItEmperor.Party.Relationship;
+using ItEmperor.Party.Classifications;
 
 namespace ItEmperor.Party;
 
@@ -21,11 +21,10 @@ public abstract class Party
     public string Name { get; }
 
     public ICollection<TelephoneNumber> TelephoneNumbers { get; private set; } = new List<TelephoneNumber>();
+    
+    public ICollection<PartyClassification> PartyClassifications { get; private set; } =
+        new List<PartyClassification>();
 
-    public ICollection<PartyRelationship> PartyRelationshipsA { get; private set; } = new List<PartyRelationship>();
-    
-    public ICollection<PartyRelationship> PartyRelationshipsB { get; private set; } = new List<PartyRelationship>();
-    
     public void AddTelephone(string name, string telephone)
     {
         TelephoneNumbers.Add(new TelephoneNumber(name, telephone));

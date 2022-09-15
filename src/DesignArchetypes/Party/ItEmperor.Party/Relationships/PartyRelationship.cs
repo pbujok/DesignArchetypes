@@ -1,6 +1,4 @@
-using System;
-
-namespace ItEmperor.Party.Relationship;
+namespace ItEmperor.Party.Relationships;
 
 public class PartyRelationship
 {
@@ -27,6 +25,7 @@ public class PartyRelationship
         PartyB = partyB;
         StartDate = startDate;
         EndDate = endDate;
+        Comment = null;
     }
     
     public PartyRelationship(Party partyA, Party partyB, DateTimeOffset startDate, DateTimeOffset? endDate, string comment)

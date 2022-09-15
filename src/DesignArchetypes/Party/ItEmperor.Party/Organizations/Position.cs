@@ -1,4 +1,4 @@
-﻿namespace ItEmperor.Party.Organization;
+﻿namespace ItEmperor.Party.Organizations;
 
 public class Position
 {

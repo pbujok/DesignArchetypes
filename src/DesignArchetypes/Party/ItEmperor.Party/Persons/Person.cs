@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using ItEmperor.Party.Address.Simple;
-using ItEmperor.Party.Organization;
-using ItEmperor.Party.Relationship.Employment;
+﻿using ItEmperor.Party.Addresses.Simple;
+using ItEmperor.Party.Classifications;
+using ItEmperor.Party.Classifications.Persons;
 
-namespace ItEmperor.Party.Person;
+namespace ItEmperor.Party.Persons;
 
 public class Person : Party
 {
@@ -21,9 +19,9 @@ public class Person : Party
     public string FirstName { get; private set; }
 
     public string LastName { get; private set; }
-    
+
     public List<SimpleAddress> Addresses { get; set; } = new List<SimpleAddress>();
-    
+
     public void AddAddress(
         string Text,
         string City,
@@ -42,9 +40,9 @@ public class Person : Party
             Type = Type
         });
     }
-    
-    public void AddComplexEmployment(Position position, DateTimeOffset from, DateTimeOffset to)
+
+    public void SetSex(DateTimeOffset birthDate, SexPartyType sex)
     {
-        PartyRelationshipsA.Add(new PositionAssignmentEmployment(position.Organization, this, from, to, position));
+        PartyClassifications.Add(new PartyClassification(birthDate, null, this, sex));
     }
 }

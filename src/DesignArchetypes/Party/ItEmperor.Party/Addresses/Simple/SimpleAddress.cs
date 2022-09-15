@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ItEmperor.Party.Address.Simple;
+﻿namespace ItEmperor.Party.Addresses.Simple;
 
 public class SimpleAddress
 {

@@ -25,6 +25,23 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PartyType",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IncomeFrom_MillionsCount = table.Column<int>(type: "int", nullable: true),
+                    IncomeFrom_Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IncomeTo_MillionsCount = table.Column<int>(type: "int", nullable: true),
+                    IncomeTo_Currency = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartyType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Placement",
                 columns: table => new
                 {
@@ -112,6 +129,32 @@ namespace ItEmperor.Party.Tests.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PartyClassification",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FromDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartyClassification", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartyClassification_Party_PartyId",
+                        column: x => x.PartyId,
+                        principalTable: "Party",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PartyClassification_PartyType_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "PartyType",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PartyRelationship",
                 columns: table => new
                 {
@@ -120,7 +163,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     PartyBId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PostName = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -145,6 +188,16 @@ namespace ItEmperor.Party.Tests.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyClassification_PartyId",
+                table: "PartyClassification",
+                column: "PartyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyClassification_TypeId",
+                table: "PartyClassification",
+                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PartyRelationship_PartyAId",
@@ -180,6 +233,9 @@ namespace ItEmperor.Party.Tests.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "PartyClassification");
+
+            migrationBuilder.DropTable(
                 name: "PartyRelationship");
 
             migrationBuilder.DropTable(
@@ -190,6 +246,9 @@ namespace ItEmperor.Party.Tests.Migrations
 
             migrationBuilder.DropTable(
                 name: "TelephoneNumber");
+
+            migrationBuilder.DropTable(
+                name: "PartyType");
 
             migrationBuilder.DropTable(
                 name: "Position");

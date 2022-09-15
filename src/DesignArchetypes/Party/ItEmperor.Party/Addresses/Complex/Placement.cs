@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ItEmperor.Party.Address.Complex;
+﻿namespace ItEmperor.Party.Addresses.Complex;
 
 public class Placement
 {

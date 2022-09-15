@@ -22,7 +22,7 @@ namespace ItEmperor.Party.Tests.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ItEmperor.Party.Address.Simple.SimpleAddress", b =>
+            modelBuilder.Entity("ItEmperor.Party.Addresses.Simple.SimpleAddress", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,55 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("SimpleAddress");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Organization.Position", b =>
+            modelBuilder.Entity("ItEmperor.Party.Classifications.PartyClassification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("FromDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("PartyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("PartyClassification");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Classifications.PartyType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PartyType", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PartyType");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Organizations.Position", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,14 +148,13 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Party");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationship.PartyRelationship", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.PartyRelationship", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -137,7 +184,25 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("PartyRelationship");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
+            modelBuilder.Entity("ItEmperor.Party.Classifications.Organizations.IncomePartyType", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Classifications.PartyType");
+
+                    b.ToTable("PartyType", (string)null);
+
+                    b.HasDiscriminator().HasValue("IncomePartyType");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Classifications.Persons.SexPartyType", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Classifications.PartyType");
+
+                    b.ToTable("PartyType", (string)null);
+
+                    b.HasDiscriminator().HasValue("SexPartyType");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Organizations.Organization", b =>
                 {
                     b.HasBaseType("ItEmperor.Party.Party");
 
@@ -150,7 +215,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("Organization");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Person.Person", b =>
+            modelBuilder.Entity("ItEmperor.Party.Persons.Person", b =>
                 {
                     b.HasBaseType("ItEmperor.Party.Party");
 
@@ -167,9 +232,9 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("Person");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationship.Employment.PositionAssignmentEmployment", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.Employments.PositionAssignmentEmployment", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Relationship.PartyRelationship");
+                    b.HasBaseType("ItEmperor.Party.Relationships.PartyRelationship");
 
                     b.Property<Guid>("PositionId")
                         .HasColumnType("uniqueidentifier");
@@ -181,9 +246,9 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("PositionAssignmentEmployment");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationship.Employment.SimpleEmployment", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.Employments.SimpleEmployment", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Relationship.PartyRelationship");
+                    b.HasBaseType("ItEmperor.Party.Relationships.PartyRelationship");
 
                     b.Property<string>("PostName")
                         .IsRequired()
@@ -194,16 +259,35 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("SimpleEmployment");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Address.Simple.SimpleAddress", b =>
+            modelBuilder.Entity("ItEmperor.Party.Addresses.Simple.SimpleAddress", b =>
                 {
-                    b.HasOne("ItEmperor.Party.Person.Person", null)
+                    b.HasOne("ItEmperor.Party.Persons.Person", null)
                         .WithMany("Addresses")
                         .HasForeignKey("PersonId");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Organization.Position", b =>
+            modelBuilder.Entity("ItEmperor.Party.Classifications.PartyClassification", b =>
                 {
-                    b.HasOne("ItEmperor.Party.Organization.Organization", "Organization")
+                    b.HasOne("ItEmperor.Party.Party", "Party")
+                        .WithMany("PartyClassifications")
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ItEmperor.Party.Classifications.PartyType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Party");
+
+                    b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Organizations.Position", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Organizations.Organization", "Organization")
                         .WithMany("Positions")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -244,16 +328,16 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("TelephoneNumbers");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationship.PartyRelationship", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.PartyRelationship", b =>
                 {
                     b.HasOne("ItEmperor.Party.Party", "PartyA")
-                        .WithMany("PartyRelationshipsA")
+                        .WithMany()
                         .HasForeignKey("PartyAId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ItEmperor.Party.Party", "PartyB")
-                        .WithMany("PartyRelationshipsB")
+                        .WithMany()
                         .HasForeignKey("PartyBId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -263,9 +347,56 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("PartyB");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
+            modelBuilder.Entity("ItEmperor.Party.Classifications.Organizations.IncomePartyType", b =>
                 {
-                    b.OwnsMany("ItEmperor.Party.Address.Complex.Placement", "Placements", b1 =>
+                    b.OwnsOne("ItEmperor.Party.Classifications.Organizations.Income", "IncomeFrom", b1 =>
+                        {
+                            b1.Property<Guid>("IncomePartyTypeId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("MillionsCount")
+                                .HasColumnType("int");
+
+                            b1.HasKey("IncomePartyTypeId");
+
+                            b1.ToTable("PartyType");
+
+                            b1.WithOwner()
+                                .HasForeignKey("IncomePartyTypeId");
+                        });
+
+                    b.OwnsOne("ItEmperor.Party.Classifications.Organizations.Income", "IncomeTo", b1 =>
+                        {
+                            b1.Property<Guid>("IncomePartyTypeId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("MillionsCount")
+                                .HasColumnType("int");
+
+                            b1.HasKey("IncomePartyTypeId");
+
+                            b1.ToTable("PartyType");
+
+                            b1.WithOwner()
+                                .HasForeignKey("IncomePartyTypeId");
+                        });
+
+                    b.Navigation("IncomeFrom");
+
+                    b.Navigation("IncomeTo");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Organizations.Organization", b =>
+                {
+                    b.OwnsMany("ItEmperor.Party.Addresses.Complex.Placement", "Placements", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -289,7 +420,7 @@ namespace ItEmperor.Party.Tests.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("OrganizationId");
 
-                            b1.OwnsOne("ItEmperor.Party.Address.Complex.Site", "Site", b2 =>
+                            b1.OwnsOne("ItEmperor.Party.Addresses.Complex.Site", "Site", b2 =>
                                 {
                                     b2.Property<Guid>("PlacementId")
                                         .HasColumnType("uniqueidentifier");
@@ -309,7 +440,7 @@ namespace ItEmperor.Party.Tests.Migrations
                                     b2.WithOwner()
                                         .HasForeignKey("PlacementId");
 
-                                    b2.OwnsOne("ItEmperor.Party.Address.Complex.GeographicLocation", "GeographicLocation", b3 =>
+                                    b2.OwnsOne("ItEmperor.Party.Addresses.Complex.GeographicLocation", "GeographicLocation", b3 =>
                                         {
                                             b3.Property<Guid>("SitePlacementId")
                                                 .HasColumnType("uniqueidentifier");
@@ -336,9 +467,9 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("Placements");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationship.Employment.PositionAssignmentEmployment", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.Employments.PositionAssignmentEmployment", b =>
                 {
-                    b.HasOne("ItEmperor.Party.Organization.Position", "Position")
+                    b.HasOne("ItEmperor.Party.Organizations.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,17 +480,15 @@ namespace ItEmperor.Party.Tests.Migrations
 
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
-                    b.Navigation("PartyRelationshipsA");
-
-                    b.Navigation("PartyRelationshipsB");
+                    b.Navigation("PartyClassifications");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Organization.Organization", b =>
+            modelBuilder.Entity("ItEmperor.Party.Organizations.Organization", b =>
                 {
                     b.Navigation("Positions");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Person.Person", b =>
+            modelBuilder.Entity("ItEmperor.Party.Persons.Person", b =>
                 {
                     b.Navigation("Addresses");
                 });

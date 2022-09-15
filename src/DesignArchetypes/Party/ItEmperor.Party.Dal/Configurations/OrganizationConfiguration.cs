@@ -1,13 +1,13 @@
-﻿using ItEmperor.Party.Address.Complex;
-using ItEmperor.Party.Organization;
+﻿using ItEmperor.Party.Addresses.Complex;
+using ItEmperor.Party.Organizations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItEmperor.Party.Tests.Configurations;
 
-public class OrganizationConfiguration : PartyConfigurationBase<Organization.Organization>
+public class OrganizationConfiguration : PartyConfigurationBase<Organization>
 {
-    public override void Configure(EntityTypeBuilder<Organization.Organization> builder)
+    public override void Configure(EntityTypeBuilder<Organization> builder)
     {
         base.Configure(builder);
         

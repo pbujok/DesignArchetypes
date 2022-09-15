@@ -13,14 +13,6 @@ public class PartyConfiguration : IEntityTypeConfiguration<Party>
             .HasConversion(x => x.Value, guid => new PartyId(guid));
         
         builder.OwnsMany(x => x.TelephoneNumbers);
-
-        builder.HasMany(x => x.PartyRelationshipsA)
-            .WithOne(x => x.PartyA)
-            .OnDelete(DeleteBehavior.NoAction);
-        
-        builder.HasMany(x => x.PartyRelationshipsB)
-            .WithOne(x => x.PartyB)
-            .OnDelete(DeleteBehavior.NoAction);
     }
 }
 

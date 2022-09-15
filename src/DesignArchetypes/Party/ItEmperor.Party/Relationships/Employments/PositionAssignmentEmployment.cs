@@ -1,6 +1,7 @@
-﻿using ItEmperor.Party.Organization;
+﻿using ItEmperor.Party.Organizations;
+using ItEmperor.Party.Persons;
 
-namespace ItEmperor.Party.Relationship.Employment;
+namespace ItEmperor.Party.Relationships.Employments;
 
 public class PositionAssignmentEmployment : Employment
 {
@@ -8,7 +9,7 @@ public class PositionAssignmentEmployment : Employment
     {
     }
 
-    public PositionAssignmentEmployment(Organization.Organization organization, Person.Person person,
+    public PositionAssignmentEmployment(Organization organization, Person person,
         DateTimeOffset startDate, DateTimeOffset? endDate, Position position) : base(organization, person, startDate, endDate)
     {
         Position = position;

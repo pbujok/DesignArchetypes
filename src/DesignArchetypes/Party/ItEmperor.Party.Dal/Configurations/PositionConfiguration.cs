@@ -1,4 +1,4 @@
-﻿using ItEmperor.Party.Organization;
+﻿using ItEmperor.Party.Organizations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,7 @@
-﻿namespace ItEmperor.Party.Relationship.Employment;
+﻿using ItEmperor.Party.Organizations;
+using ItEmperor.Party.Persons;
+
+namespace ItEmperor.Party.Relationships.Employments;
 
 public class SimpleEmployment : Employment
 {
@@ -6,7 +9,7 @@ public class SimpleEmployment : Employment
     {
     }
 
-    public SimpleEmployment(Organization.Organization organization, Person.Person person, DateTimeOffset startDate,
+    public SimpleEmployment(Organization organization, Person person, DateTimeOffset startDate,
         DateTimeOffset? endDate, string postName) : base(organization, person, startDate, endDate)
     {
         PostName = postName;
