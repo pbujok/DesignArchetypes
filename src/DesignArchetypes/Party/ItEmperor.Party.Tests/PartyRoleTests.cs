@@ -3,12 +3,15 @@ using System.Linq;
 using ItEmperor.Party.Organizations;
 using ItEmperor.Party.Persons;
 using ItEmperor.Party.Roles;
+using ItEmperor.Party.Tests.Repositories;
 using Xunit;
 
 namespace ItEmperor.Party.Tests;
 
 public class PartyRoleTests
 {
+    private PartyRepository _partyRepository = new();
+    
     [Fact]
     public void AssignPartyRole_AssignRole_RoleAssigned()
     {
@@ -22,12 +25,10 @@ public class PartyRoleTests
 
         var organization = TestData.Organizations.CesarzIt;
         organization.AddRole(TestData.Date1, null, customerRole);
-
-        using var context = new PartyDbContext();
-        AttachOrAddIfExists(context, customerRole);
-        context.Set<Person>().Add(person);
-        context.Set<Organization>().Add(organization);
-        context.SaveChanges();
+        
+        
+        _partyRepository.Add(person);
+        _partyRepository.Add(organization);
     }
 
     private static void AttachOrAddIfExists(PartyDbContext context, RoleType type)

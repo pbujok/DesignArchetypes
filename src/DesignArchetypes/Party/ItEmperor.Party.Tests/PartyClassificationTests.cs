@@ -3,43 +3,40 @@ using System.Linq;
 using ItEmperor.Party.Classifications;
 using ItEmperor.Party.Classifications.Organizations;
 using ItEmperor.Party.Classifications.Persons;
-using ItEmperor.Party.Organizations;
-using ItEmperor.Party.Persons;
+using ItEmperor.Party.Tests.Repositories;
 using Xunit;
 
 namespace ItEmperor.Party.Tests;
 
 public class PartyClassificationTests
 {
+    private PartyRepository _partyRepository = new();
+    
     [Fact]
     public void PartyClassification_ProgressingIncomeClassification_MultipleClassificationsInTimeline()
     {
+        AddIfNotExists(IncomePartyType.MicroCompany);
+        AddIfNotExists(IncomePartyType.MediumCompany);
+        AddIfNotExists(IncomePartyType.LargeCompany);
+        
         var company = TestData.Organizations.CesarzIt;
 
         company.AddIncomeClassification(TestData.Date1, TestData.Date2, IncomePartyType.MicroCompany);
         company.AddIncomeClassification(TestData.Date2, TestData.Date3, IncomePartyType.MediumCompany);
         company.AddIncomeClassification(TestData.Date3, null, IncomePartyType.LargeCompany);
 
-        using var context = new PartyDbContext();
-        AttachOrAddIfExists(context, IncomePartyType.MicroCompany);
-        AttachOrAddIfExists(context, IncomePartyType.MediumCompany);
-        AttachOrAddIfExists(context, IncomePartyType.LargeCompany);
-
-        context.Set<Organization>().Add(company);
-        context.SaveChanges();
+        _partyRepository.Add(company);
     }
 
     [Fact]
     public void PartyClassification_PersonSexClassification()
     {
+        AddIfNotExists(SexPartyType.Female);
+        
         var person = TestData.People.Slowacki;
-        var sexPartyType = SexPartyType.Female;
-        person.SetSex(TestData.Date1, sexPartyType);
-
-        using var context = new PartyDbContext();
-        AttachOrAddIfExists(context, sexPartyType);
-        context.Set<Person>().Add(person);
-        context.SaveChanges();
+        person.SetSex(TestData.Date1, SexPartyType.Female);
+        
+        _partyRepository.Add(person);
     }
 
     [Fact]
@@ -62,23 +59,25 @@ public class PartyClassificationTests
         var classification = new PartyClassification(birthDate, becomeRusDate, person, usNationality);
         var classificationUpdate = new PartyClassification(becomeRusDate, null, person, rusNationality);
 
-        using var context = new PartyDbContext();
-        AttachOrAddIfExists(context, rusNationality);
-        AttachOrAddIfExists(context, usNationality);
+        
+        AddIfNotExists(usNationality);
+        AddIfNotExists(rusNationality);
 
-        context.Set<Person>().Add(person);
+        _partyRepository.Add(person);
+        
+        using var context = new PartyDbContext();
+        context.Attach(person);
+        context.Attach(rusNationality);
+        context.Attach(usNationality);
         context.Set<PartyClassification>().Add(classification);
         context.Set<PartyClassification>().Add(classificationUpdate);
         context.SaveChanges();
     }
 
-    private static void AttachOrAddIfExists(PartyDbContext context, PartyType type)
+    private static void AddIfNotExists(PartyType type)
     {
-        if (context.Set<PartyType>().Any(x => x.Id == type.Id))
-        {
-            context.Attach(type);
-        }
-        else
+        using var context = new PartyDbContext();
+        if (!context.Set<PartyType>().Any(x => x.Id == type.Id))
         {
             context.Set<PartyType>().Add(type);
         }

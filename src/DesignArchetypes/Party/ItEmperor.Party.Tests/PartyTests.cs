@@ -4,6 +4,7 @@ using ItEmperor.Party.Organizations;
 using ItEmperor.Party.Persons;
 using ItEmperor.Party.Relationships;
 using ItEmperor.Party.Relationships.Employments;
+using ItEmperor.Party.Tests.Repositories;
 using Xunit;
 
 namespace ItEmperor.Party.Tests;
@@ -18,11 +19,10 @@ public class PartyTests
         var company = new Organization(new TaxId("1234"), "Cesarz Id Sp.z o.o.");
         company.AddTelephone("Office", "555 555 22");
         company.AddTelephone("Boss", "021 333 777");
-
-        using var context = new PartyDbContext();
-        context.Set<Person>().Add(person);
-        context.Set<Organization>().Add(company);
-        context.SaveChanges();
+        
+        var repo = new PartyRepository();
+        repo.Add(person);
+        repo.Add(company);
     }
 
     [Fact]
@@ -33,9 +33,13 @@ public class PartyTests
 
         var relation = new SimpleEmployment(company, person, TestData.Date1, TestData.Date2, "Writer");
 
+        var repo = new PartyRepository();
+        repo.Add(person);
+        repo.Add(company);
+
         using var context = new PartyDbContext();
-        context.Set<Person>().Add(person);
-        context.Set<Organization>().Add(company);
+        context.Attach(person);
+        context.Attach(company);
         context.Set<PartyRelationship>().Add(relation);
         context.SaveChanges();
     }
@@ -50,11 +54,14 @@ public class PartyTests
         var employmentRelation =
             new PositionAssignmentEmployment(company, person, TestData.Date1, null, company.Positions.First());
 
+        var repo = new PartyRepository();
+        repo.Add(person);
+        repo.Add(company);
+        
         using var context = new PartyDbContext();
-        context.Set<Person>().Add(person);
-        context.Set<Organization>().Add(company);
+        context.Attach(person);
+        context.Attach(company);
         context.Set<PartyRelationship>().Add(employmentRelation);
-
         context.SaveChanges();
     }
 
@@ -74,9 +81,8 @@ public class PartyTests
 
         company.AddPlacement(TestData.Date1, null, site);
 
-        using var context = new PartyDbContext();
-        context.Set<Person>().Add(person);
-        context.Set<Organization>().Add(company);
-        context.SaveChanges();
+        var repo = new PartyRepository();
+        repo.Add(person);
+        repo.Add(company);
     }
 }
