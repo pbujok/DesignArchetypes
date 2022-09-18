@@ -17,6 +17,8 @@ public static class TestData
         public static Organization CesarzIt => new Organization(new TaxId("1234"), "Cesarz It Sp.z o.o.");
         
         public static Organization JablkoSa => new Organization(new TaxId("4444"), "Jabłko S.A.");
+        
+        public static Organization Stonka => new Organization(new TaxId("555"), "Stonka S.A.");
     }
 
     public static class People

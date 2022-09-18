@@ -43,7 +43,7 @@ public class PartyRelationshipTests
     }
 
     [Fact]
-    public void CustomerRelationship_CompaniesRelationship_RelationAssigned()
+    public void CustomerRelationship_PersonalAndCompanyRelationship_RelationAssigned()
     {
         // Arrange
         AddIfNotExists(PartyRoleType.Customer);
@@ -61,15 +61,41 @@ public class PartyRelationshipTests
         var customerRole = new CustomerPartyRole(TestData.Date1, null, company1);
         var personCustomerRole = new CustomerPartyRole(TestData.Date2, null, person);
         var providerRole = new WarehousePartyRole(TestData.Date1, null, company2);
-        
 
         // Act
-
         _repo.Add(new CustomerPartyRelationship(customerRole, providerRole, TestData.Date1, TestData.Date2,
             "Buys apples"));
-        
+
         _repo.Add(new CustomerPartyRelationship(personCustomerRole, providerRole, TestData.Date2, null,
             "Buys pomelos"));
+    }
+
+    [Fact]
+    public void SubdivisionRelationship_OrganizationRelationship_RelationAssigned()
+    {
+        // Arrange
+        AddIfNotExists(PartyRoleType.RetailSales);
+        AddIfNotExists(PartyRoleType.Warehouse);
+        AddIfNotExists(PartyRelationshipType.Customer);
+
+        var company1 = TestData.Organizations.CesarzIt;
+        var company2 = TestData.Organizations.JablkoSa;
+        var company3 = TestData.Organizations.Stonka;
+
+        _partyRepo.Add(company1);
+        _partyRepo.Add(company2);
+        _partyRepo.Add(company3);
+
+        var providerRole = new WarehousePartyRole(TestData.Date1, null, company1);
+        var subCompany1 = new RetailSalesPartyRole(TestData.Date2, null, company2);
+        var subCompany2 = new RetailSalesPartyRole(TestData.Date2, null, company3);
+
+        // Act
+        _repo.Add(new RetailSalesPartyRelationship(subCompany1, providerRole, TestData.Date1, TestData.Date2,
+            "Retail sales 1"));
+
+        _repo.Add(new RetailSalesPartyRelationship(subCompany2, providerRole, TestData.Date2, null,
+            "Retail sales 2"));
     }
 
     private static void AddIfNotExists(PartyRelationshipType type)

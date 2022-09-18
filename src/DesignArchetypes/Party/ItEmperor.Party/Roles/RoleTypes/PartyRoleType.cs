@@ -22,6 +22,11 @@ public class PartyRoleType : RoleType
         Id = new Guid("701a5fc8-c0d0-4acd-839e-4698a86611d0")
     };
     
+    public static PartyRoleType RetailSales { get; } = new("RetailSales")
+    {
+        Id = new Guid("79a67286-601e-4b6b-b7d3-6187851a7068")
+    };
+    
     protected PartyRoleType()
     {
     }
