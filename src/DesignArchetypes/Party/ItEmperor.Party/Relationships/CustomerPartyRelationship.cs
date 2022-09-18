@@ -1,4 +1,5 @@
-﻿using ItEmperor.Party.Roles.PartyRoles;
+﻿using ItEmperor.Party.Roles;
+using ItEmperor.Party.Roles.PartyRoles;
 
 namespace ItEmperor.Party.Relationships;
 

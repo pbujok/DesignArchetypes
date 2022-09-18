@@ -1,4 +1,4 @@
-﻿using ItEmperor.Party.Relationships.Employments;
+﻿using ItEmperor.Party.Relationships;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItEmperor.Party.Tests.Configurations.Relationships;

@@ -1,6 +1,5 @@
 using ItEmperor.Party.Roles;
 using ItEmperor.Party.Roles.PartyRoles;
-using ItEmperor.Party.Roles.RoleTypes;
 
 namespace ItEmperor.Party.Relationships;
 
@@ -21,11 +20,6 @@ public class PartyRelationship
     public string? Comment { get; private set; }
 
     protected PartyRelationship()
-    {
-    }
-
-    public PartyRelationship(PartyRole from, PartyRole to, DateTimeOffset startDate, DateTimeOffset? endDate)
-        : this(from, to, startDate, endDate, null!, null)
     {
     }
 

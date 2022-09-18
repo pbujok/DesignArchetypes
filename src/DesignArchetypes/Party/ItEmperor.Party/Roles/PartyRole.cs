@@ -1,6 +1,6 @@
 using ItEmperor.Party.Roles.RoleTypes;
 
-namespace ItEmperor.Party.Roles.PartyRoles;
+namespace ItEmperor.Party.Roles;
 
 public class PartyRole
 {

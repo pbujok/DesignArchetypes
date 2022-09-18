@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ItEmperor.Party.Classifications;
+using ItEmperor.Party.Roles;
 using ItEmperor.Party.Roles.RoleTypes;
 using ItEmperor.Party.Tests.Repositories;
 using Xunit;

@@ -2,7 +2,6 @@
 using ItEmperor.Party.Organizations;
 using ItEmperor.Party.Persons;
 using ItEmperor.Party.Relationships;
-using ItEmperor.Party.Relationships.Employments;
 using ItEmperor.Party.Roles.PartyRoles;
 using ItEmperor.Party.Roles.RoleTypes;
 using ItEmperor.Party.Tests.Repositories;
