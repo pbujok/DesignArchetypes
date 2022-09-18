@@ -8,8 +8,8 @@ public class PartyRelationshipType
         new("Person employmment", "Employment", PartyRoleType.Employee, PartyRoleType.Employer);
     
     public static PartyRelationshipType Customer { get; } =
-        new("Company's customer", "Customer", PartyRoleType.Customer, PartyRoleType.Provider);
-
+        new("Company's customer", "Customer", PartyRoleType.Customer, PartyRoleType.Warehouse);
+    
     public Guid Id { get; init; }
 
     public string Description { get; set; }

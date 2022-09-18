@@ -47,22 +47,29 @@ public class PartyRelationshipTests
     {
         // Arrange
         AddIfNotExists(PartyRoleType.Customer);
-        AddIfNotExists(PartyRoleType.Provider);
+        AddIfNotExists(PartyRoleType.Warehouse);
         AddIfNotExists(PartyRelationshipType.Customer);
 
         var company1 = TestData.Organizations.CesarzIt;
         var company2 = TestData.Organizations.JablkoSa;
+        var person = TestData.People.Slowacki;
 
         _partyRepo.Add(company1);
         _partyRepo.Add(company2);
+        _partyRepo.Add(person);
 
         var customerRole = new CustomerPartyRole(TestData.Date1, null, company1);
-        var providerRole = new ProviderPartyRole(TestData.Date1, null, company2);
+        var personCustomerRole = new CustomerPartyRole(TestData.Date2, null, person);
+        var providerRole = new WarehousePartyRole(TestData.Date1, null, company2);
+        
 
         // Act
 
         _repo.Add(new CustomerPartyRelationship(customerRole, providerRole, TestData.Date1, TestData.Date2,
             "Buys apples"));
+        
+        _repo.Add(new CustomerPartyRelationship(personCustomerRole, providerRole, TestData.Date2, null,
+            "Buys pomelos"));
     }
 
     private static void AddIfNotExists(PartyRelationshipType type)

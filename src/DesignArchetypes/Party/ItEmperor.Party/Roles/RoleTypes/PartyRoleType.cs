@@ -17,7 +17,7 @@ public class PartyRoleType : RoleType
         Id = new Guid("46694c99-33f7-405f-b9db-737bec0e6f46")
     };
     
-    public static PartyRoleType Provider { get; } = new("Customer")
+    public static PartyRoleType Warehouse { get; } = new("Warehouse")
     {
         Id = new Guid("701a5fc8-c0d0-4acd-839e-4698a86611d0")
     };
