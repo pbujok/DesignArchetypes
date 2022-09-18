@@ -1,4 +1,4 @@
-﻿namespace ItEmperor.Party.Roles;
+﻿namespace ItEmperor.Party.Roles.RoleTypes;
 
 public abstract class RoleType
 {

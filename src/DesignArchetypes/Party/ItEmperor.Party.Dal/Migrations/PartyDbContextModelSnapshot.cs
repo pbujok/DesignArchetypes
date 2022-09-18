@@ -132,6 +132,31 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("Position");
                 });
 
+            modelBuilder.Entity("ItEmperor.Party.Organizations.SimpleEmployment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PostName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("SimpleEmployment");
+                });
+
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.Property<Guid>("Id")
@@ -164,27 +189,61 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Property<DateTimeOffset?>("EndDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("PartyAId")
+                    b.Property<Guid>("FromId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PartyBId")
+                    b.Property<Guid?>("PartyRelationshipTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<Guid>("ToId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("PartyAId");
+                    b.HasIndex("FromId");
 
-                    b.HasIndex("PartyBId");
+                    b.HasIndex("PartyRelationshipTypeId");
+
+                    b.HasIndex("ToId");
 
                     b.ToTable("PartyRelationship");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("PartyRelationship");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRole", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.PartyRelationshipType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("FromId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ToId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("ToId");
+
+                    b.ToTable("PartyRelationshipType");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.PartyRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,6 +254,10 @@ namespace ItEmperor.Party.Tests.Migrations
 
                     b.Property<DateTimeOffset?>("DateTo")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("PartyId")
                         .HasColumnType("uniqueidentifier");
@@ -209,9 +272,11 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasIndex("RoleTypeId");
 
                     b.ToTable("PartyRole", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PartyRole");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.RoleType", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.RoleTypes.RoleType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -294,22 +359,27 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("PositionAssignmentEmployment");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationships.Employments.SimpleEmployment", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.OrganizationPartyRole", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Relationships.PartyRelationship");
+                    b.HasBaseType("ItEmperor.Party.Roles.PartyRoles.PartyRole");
 
-                    b.Property<string>("PostName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.ToTable("PartyRole", (string)null);
 
-                    b.ToTable("PartyRelationship", (string)null);
-
-                    b.HasDiscriminator().HasValue("SimpleEmployment");
+                    b.HasDiscriminator().HasValue("OrganizationPartyRole");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoleType", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.PersonPartyRole", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Roles.RoleType");
+                    b.HasBaseType("ItEmperor.Party.Roles.PartyRoles.PartyRole");
+
+                    b.ToTable("PartyRole", (string)null);
+
+                    b.HasDiscriminator().HasValue("PersonPartyRole");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Roles.RoleTypes.PartyRoleType", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Roles.RoleTypes.RoleType");
 
                     b.HasDiscriminator().HasValue("PartyRoleType");
                 });
@@ -351,6 +421,25 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("ItEmperor.Party.Organizations.SimpleEmployment", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Organizations.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ItEmperor.Party.Persons.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("Person");
+                });
+
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.OwnsMany("ItEmperor.Party.TelephoneNumber", "TelephoneNumbers", b1 =>
@@ -385,24 +474,49 @@ namespace ItEmperor.Party.Tests.Migrations
 
             modelBuilder.Entity("ItEmperor.Party.Relationships.PartyRelationship", b =>
                 {
-                    b.HasOne("ItEmperor.Party.Party", "PartyA")
+                    b.HasOne("ItEmperor.Party.Roles.PartyRoles.PartyRole", "From")
                         .WithMany()
-                        .HasForeignKey("PartyAId")
+                        .HasForeignKey("FromId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("ItEmperor.Party.Party", "PartyB")
+                    b.HasOne("ItEmperor.Party.Relationships.PartyRelationshipType", "PartyRelationshipType")
                         .WithMany()
-                        .HasForeignKey("PartyBId")
+                        .HasForeignKey("PartyRelationshipTypeId");
+
+                    b.HasOne("ItEmperor.Party.Roles.PartyRoles.PartyRole", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("PartyA");
+                    b.Navigation("From");
 
-                    b.Navigation("PartyB");
+                    b.Navigation("PartyRelationshipType");
+
+                    b.Navigation("To");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRole", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.PartyRelationshipType", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Roles.RoleTypes.PartyRoleType", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ItEmperor.Party.Roles.RoleTypes.PartyRoleType", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("From");
+
+                    b.Navigation("To");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.PartyRole", b =>
                 {
                     b.HasOne("ItEmperor.Party.Party", "Party")
                         .WithMany("PartyRoles")
@@ -410,7 +524,7 @@ namespace ItEmperor.Party.Tests.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ItEmperor.Party.Roles.PartyRoleType", "RoleType")
+                    b.HasOne("ItEmperor.Party.Roles.RoleTypes.PartyRoleType", "RoleType")
                         .WithMany()
                         .HasForeignKey("RoleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)

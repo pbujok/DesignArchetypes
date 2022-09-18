@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItEmperor.Party.Tests.Configurations.Relationships;
 
-public class PartyRelationshipConfiguration : IEntityTypeConfiguration<PartyRelationship>
+public class PartyRelationshipTypeConfiguration : IEntityTypeConfiguration<PartyRelationshipType>
 {
-    public void Configure(EntityTypeBuilder<PartyRelationship> builder)
+    public void Configure(EntityTypeBuilder<PartyRelationshipType> builder)
     {
         builder.HasKey(x => x.Id);
 
@@ -19,13 +19,3 @@ public class PartyRelationshipConfiguration : IEntityTypeConfiguration<PartyRela
             .OnDelete(DeleteBehavior.NoAction);
     }
 }
-
-public abstract class PartyRelationshipConfigrationBase<TParty> : IEntityTypeConfiguration<TParty>
-    where TParty : PartyRelationship
-{
-    public virtual void Configure(EntityTypeBuilder<TParty> builder)
-    {
-        builder.ToTable("PartyRelationship");
-    }
-}
-

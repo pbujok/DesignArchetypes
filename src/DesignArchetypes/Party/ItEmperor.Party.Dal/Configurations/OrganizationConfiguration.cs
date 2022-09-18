@@ -1,6 +1,5 @@
 ﻿using ItEmperor.Party.Addresses.Complex;
 using ItEmperor.Party.Organizations;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItEmperor.Party.Tests.Configurations;

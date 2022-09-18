@@ -81,6 +81,8 @@ public class PartyClassificationTests
         {
             context.Set<PartyType>().Add(type);
         }
+
+        context.SaveChanges();
     }
     
 }

@@ -1,5 +1,6 @@
 ﻿using ItEmperor.Party.Classifications;
 using ItEmperor.Party.Roles;
+using ItEmperor.Party.Roles.RoleTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

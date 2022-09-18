@@ -1,5 +1,7 @@
 ﻿using ItEmperor.Party.Classifications;
 using ItEmperor.Party.Roles;
+using ItEmperor.Party.Roles.PartyRoles;
+using ItEmperor.Party.Roles.RoleTypes;
 
 namespace ItEmperor.Party;
 

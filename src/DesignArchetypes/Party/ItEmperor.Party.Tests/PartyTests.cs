@@ -1,9 +1,6 @@
-using System.Linq;
 using ItEmperor.Party.Addresses.Complex;
 using ItEmperor.Party.Organizations;
 using ItEmperor.Party.Persons;
-using ItEmperor.Party.Relationships;
-using ItEmperor.Party.Relationships.Employments;
 using ItEmperor.Party.Tests.Repositories;
 using Xunit;
 
@@ -40,31 +37,10 @@ public class PartyTests
         using var context = new PartyDbContext();
         context.Attach(person);
         context.Attach(company);
-        context.Set<PartyRelationship>().Add(relation);
+        context.Set<SimpleEmployment>().Add(relation);
         context.SaveChanges();
     }
-
-    [Fact]
-    public void Parties_Employment_ComplexModel()
-    {
-        var person = new Person("Juliusz", "Słowacki");
-        var company = new Organization(new TaxId("1235"), "Wacki S.A.");
-        company.AddPosition("Writer", 10, 100);
-
-        var employmentRelation =
-            new PositionAssignmentEmployment(company, person, TestData.Date1, null, company.Positions.First());
-
-        var repo = new PartyRepository();
-        repo.Add(person);
-        repo.Add(company);
-        
-        using var context = new PartyDbContext();
-        context.Attach(person);
-        context.Attach(company);
-        context.Set<PartyRelationship>().Add(employmentRelation);
-        context.SaveChanges();
-    }
-
+    
     [Fact]
     public void Parties_Address_SimpleModel()
     {
