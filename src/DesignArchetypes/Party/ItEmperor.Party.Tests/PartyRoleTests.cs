@@ -11,7 +11,7 @@ namespace ItEmperor.Party.Tests;
 public class PartyRoleTests
 {
     private PartyRepository _partyRepository = new();
-    
+
     [Fact]
     public void AssignPartyRole_AssignRole_RoleAssigned()
     {
@@ -26,7 +26,7 @@ public class PartyRoleTests
 
         var organization = TestData.Organizations.CesarzIt;
         organization.AddRole(TestData.Date1, null, customerRole);
-        
+
         _partyRepository.Add(person);
         _partyRepository.Add(organization);
     }
@@ -38,6 +38,7 @@ public class PartyRoleTests
         {
             context.Set<RoleType>().Add(type);
         }
+
         context.SaveChanges();
     }
 }

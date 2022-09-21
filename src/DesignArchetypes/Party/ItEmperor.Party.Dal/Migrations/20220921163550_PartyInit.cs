@@ -5,10 +5,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ItEmperor.Party.Tests.Migrations
 {
-    public partial class Init : Migration
+    public partial class PartyInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ContactMechanism",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContactMechanismType = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactMechanism", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Party",
                 columns: table => new
@@ -52,6 +65,33 @@ namespace ItEmperor.Party.Tests.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RoleType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PartyContactMechanism",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContactMechanismId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FromDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ToDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartyContactMechanism", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartyContactMechanism_ContactMechanism_ContactMechanismId",
+                        column: x => x.ContactMechanismId,
+                        principalTable: "ContactMechanism",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PartyContactMechanism_Party_PartyId",
+                        column: x => x.PartyId,
+                        principalTable: "Party",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -142,27 +182,6 @@ namespace ItEmperor.Party.Tests.Migrations
                         column: x => x.PersonId,
                         principalTable: "Party",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TelephoneNumber",
-                columns: table => new
-                {
-                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TelephoneNumber", x => new { x.PartyId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_TelephoneNumber_Party_PartyId",
-                        column: x => x.PartyId,
-                        principalTable: "Party",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,6 +314,16 @@ namespace ItEmperor.Party.Tests.Migrations
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PartyContactMechanism_ContactMechanismId",
+                table: "PartyContactMechanism",
+                column: "ContactMechanismId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyContactMechanism_PartyId",
+                table: "PartyContactMechanism",
+                column: "PartyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PartyRelationship_FromId",
                 table: "PartyRelationship",
                 column: "FromId");
@@ -366,6 +395,9 @@ namespace ItEmperor.Party.Tests.Migrations
                 name: "PartyClassification");
 
             migrationBuilder.DropTable(
+                name: "PartyContactMechanism");
+
+            migrationBuilder.DropTable(
                 name: "PartyRelationship");
 
             migrationBuilder.DropTable(
@@ -378,10 +410,10 @@ namespace ItEmperor.Party.Tests.Migrations
                 name: "SimpleEmployment");
 
             migrationBuilder.DropTable(
-                name: "TelephoneNumber");
+                name: "PartyType");
 
             migrationBuilder.DropTable(
-                name: "PartyType");
+                name: "ContactMechanism");
 
             migrationBuilder.DropTable(
                 name: "PartyRelationshipType");

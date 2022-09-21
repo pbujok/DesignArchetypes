@@ -106,6 +106,53 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("PartyType");
                 });
 
+            modelBuilder.Entity("ItEmperor.Party.Contact.ContactMechanism", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ContactMechanismType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactMechanism", (string)null);
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Contact.PartyContactMechanism", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ContactMechanismId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("FromDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("PartyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ToDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactMechanismId");
+
+                    b.HasIndex("PartyId");
+
+                    b.ToTable("PartyContactMechanism");
+                });
+
             modelBuilder.Entity("ItEmperor.Party.Organizations.Position", b =>
                 {
                     b.Property<Guid>("Id")
@@ -243,7 +290,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.ToTable("PartyRelationshipType");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.PartyRole", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -276,7 +323,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("PartyRole");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.RoleTypes.RoleType", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.RoleType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -345,7 +392,16 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("Person");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationships.Employments.PositionAssignmentEmployment", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.CustomerPartyRelationship", b =>
+                {
+                    b.HasBaseType("ItEmperor.Party.Relationships.PartyRelationship");
+
+                    b.ToTable("PartyRelationship", (string)null);
+
+                    b.HasDiscriminator().HasValue("CustomerPartyRelationship");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Relationships.PositionAssignmentEmployment", b =>
                 {
                     b.HasBaseType("ItEmperor.Party.Relationships.PartyRelationship");
 
@@ -359,18 +415,18 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.HasDiscriminator().HasValue("PositionAssignmentEmployment");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.OrganizationPartyRole", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.OrganizationPartyRole", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Roles.PartyRoles.PartyRole");
+                    b.HasBaseType("ItEmperor.Party.Roles.PartyRole");
 
                     b.ToTable("PartyRole", (string)null);
 
                     b.HasDiscriminator().HasValue("OrganizationPartyRole");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.PersonPartyRole", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.PersonPartyRole", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Roles.PartyRoles.PartyRole");
+                    b.HasBaseType("ItEmperor.Party.Roles.PartyRole");
 
                     b.ToTable("PartyRole", (string)null);
 
@@ -379,7 +435,7 @@ namespace ItEmperor.Party.Tests.Migrations
 
             modelBuilder.Entity("ItEmperor.Party.Roles.RoleTypes.PartyRoleType", b =>
                 {
-                    b.HasBaseType("ItEmperor.Party.Roles.RoleTypes.RoleType");
+                    b.HasBaseType("ItEmperor.Party.Roles.RoleType");
 
                     b.HasDiscriminator().HasValue("PartyRoleType");
                 });
@@ -408,6 +464,25 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("Party");
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("ItEmperor.Party.Contact.PartyContactMechanism", b =>
+                {
+                    b.HasOne("ItEmperor.Party.Contact.ContactMechanism", "ContactMechanism")
+                        .WithMany()
+                        .HasForeignKey("ContactMechanismId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ItEmperor.Party.Party", "Party")
+                        .WithMany("PartyContactMechanisms")
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ContactMechanism");
+
+                    b.Navigation("Party");
                 });
 
             modelBuilder.Entity("ItEmperor.Party.Organizations.Position", b =>
@@ -440,41 +515,9 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Party", b =>
-                {
-                    b.OwnsMany("ItEmperor.Party.TelephoneNumber", "TelephoneNumbers", b1 =>
-                        {
-                            b1.Property<Guid>("PartyId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("PartyId", "Id");
-
-                            b1.ToTable("TelephoneNumber");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PartyId");
-                        });
-
-                    b.Navigation("TelephoneNumbers");
-                });
-
             modelBuilder.Entity("ItEmperor.Party.Relationships.PartyRelationship", b =>
                 {
-                    b.HasOne("ItEmperor.Party.Roles.PartyRoles.PartyRole", "From")
+                    b.HasOne("ItEmperor.Party.Roles.PartyRole", "From")
                         .WithMany()
                         .HasForeignKey("FromId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -484,7 +527,7 @@ namespace ItEmperor.Party.Tests.Migrations
                         .WithMany()
                         .HasForeignKey("PartyRelationshipTypeId");
 
-                    b.HasOne("ItEmperor.Party.Roles.PartyRoles.PartyRole", "To")
+                    b.HasOne("ItEmperor.Party.Roles.PartyRole", "To")
                         .WithMany()
                         .HasForeignKey("ToId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -516,7 +559,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("To");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRoles.PartyRole", b =>
+            modelBuilder.Entity("ItEmperor.Party.Roles.PartyRole", b =>
                 {
                     b.HasOne("ItEmperor.Party.Party", "Party")
                         .WithMany("PartyRoles")
@@ -655,7 +698,7 @@ namespace ItEmperor.Party.Tests.Migrations
                     b.Navigation("Placements");
                 });
 
-            modelBuilder.Entity("ItEmperor.Party.Relationships.Employments.PositionAssignmentEmployment", b =>
+            modelBuilder.Entity("ItEmperor.Party.Relationships.PositionAssignmentEmployment", b =>
                 {
                     b.HasOne("ItEmperor.Party.Organizations.Position", "Position")
                         .WithMany()
@@ -669,6 +712,8 @@ namespace ItEmperor.Party.Tests.Migrations
             modelBuilder.Entity("ItEmperor.Party.Party", b =>
                 {
                     b.Navigation("PartyClassifications");
+
+                    b.Navigation("PartyContactMechanisms");
 
                     b.Navigation("PartyRoles");
                 });

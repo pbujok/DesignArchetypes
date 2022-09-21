@@ -1,6 +1,7 @@
 ﻿using ItEmperor.Party.Classifications;
+using ItEmperor.Party.Contact;
+using ItEmperor.Party.Contact.ContactMechanisms;
 using ItEmperor.Party.Roles;
-using ItEmperor.Party.Roles.PartyRoles;
 using ItEmperor.Party.Roles.RoleTypes;
 
 namespace ItEmperor.Party;
@@ -20,19 +21,27 @@ public abstract class Party
     public PartyId Id { get; }
 
     public string Name { get; }
-
-    public ICollection<TelephoneNumber> TelephoneNumbers { get; private set; } = new List<TelephoneNumber>();
-
+    
     public ICollection<PartyClassification> PartyClassifications { get; private set; } =
         new List<PartyClassification>();
 
+    public ICollection<PartyContactMechanism> PartyContactMechanisms { get; private set; } =
+        new List<PartyContactMechanism>();
+
     public ICollection<PartyRole> PartyRoles { get; private set; } = new List<PartyRole>();
 
-    public void AddTelephone(string name, string telephone)
+    public void AddTelephone(string name, string telephone, DateTimeOffset from, DateTimeOffset? to = null)
     {
-        TelephoneNumbers.Add(new TelephoneNumber(name, telephone));
+        var partyContactMechanism = new PartyContactMechanism(new TelephoneContactMechanism(name, telephone), this, from, to);
+        PartyContactMechanisms.Add(partyContactMechanism);
     }
     
+    public void AddEmail(string email, DateTimeOffset from, DateTimeOffset? to = null, string? name = null)
+    {
+        var partyContactMechanism = new PartyContactMechanism(new EmailContactMechanism(name, email), this, from, to);
+        PartyContactMechanisms.Add(partyContactMechanism);
+    }
+
     public void AddRole(DateTimeOffset dateFrom, DateTimeOffset? dateTo, PartyRoleType partyRoleType)
     {
         PartyRoles.Add(new PartyRole(dateFrom, dateTo, this, partyRoleType));

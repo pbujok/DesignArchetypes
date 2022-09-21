@@ -11,8 +11,10 @@ public class PartyConfiguration : IEntityTypeConfiguration<Party>
 
         builder.Property(x => x.Id)
             .HasConversion(x => x.Value, guid => new PartyId(guid));
-        
-        builder.OwnsMany(x => x.TelephoneNumbers);
+
+        builder.HasMany(x => x.PartyContactMechanisms)
+            .WithOne(x => x.Party)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
 

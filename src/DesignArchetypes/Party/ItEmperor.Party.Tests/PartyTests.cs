@@ -12,10 +12,7 @@ public class PartyTests
     public void Parties_create()
     {
         var person = new Person("Adam", "Mickiewicz");
-        person.AddTelephone("Mobile", "0700880777");
         var company = new Organization(new TaxId("1234"), "Cesarz Id Sp.z o.o.");
-        company.AddTelephone("Office", "555 555 22");
-        company.AddTelephone("Boss", "021 333 777");
         
         var repo = new PartyRepository();
         repo.Add(person);
