@@ -19,8 +19,7 @@ public class Organization : Party
     public ICollection<Position> Positions { get; set; } = new List<Position>();
 
     public List<Placement> Placements { get; set; } = new List<Placement>();
-
-
+    
     public void AddPosition(string description, int hourSalaryFrom, int hourSalaryTo)
     {
         Positions.Add(new Position(description, hourSalaryFrom, hourSalaryTo, this));

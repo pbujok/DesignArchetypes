@@ -2,6 +2,16 @@
 
 public class Position
 {
+    public Guid Id { get; }
+
+    public string Description { get; private set; }
+
+    public int HourSalaryFrom { get; private set; }
+
+    public int HourSalaryTo { get; private set; }
+
+    public Organization Organization { get; private set; }
+
     protected Position()
     {
     }
@@ -14,14 +24,4 @@ public class Position
         HourSalaryTo = hourSalaryTo;
         Organization = organization;
     }
-
-    public Guid Id { get; }
-
-    public string Description { get; private set; }
-
-    public int HourSalaryFrom { get; private set; }
-
-    public int HourSalaryTo { get; private set; }
-
-    public Organization Organization { get; private set; }
 }

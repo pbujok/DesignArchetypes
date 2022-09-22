@@ -16,7 +16,6 @@ public class SimpleEmployment
 
     public string PostName { get; private set; }
 
-
     protected SimpleEmployment()
     {
     }

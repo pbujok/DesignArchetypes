@@ -2,6 +2,14 @@
 
 public class GeographicLocation
 {
+    public Guid Id { get; }
+
+    public string Value { get; }
+
+    public GeographicLocationType Type { get; }
+
+    public GeographicLocation? ChildOf { get; }
+
     protected GeographicLocation()
     {
         
@@ -21,12 +29,4 @@ public class GeographicLocation
         Type = type;
         ChildOf = childOf;
     }
-
-    public Guid Id { get; }
-
-    public string Value { get; }
-
-    public GeographicLocationType Type { get; }
-
-    public GeographicLocation? ChildOf { get; }
 }

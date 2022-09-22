@@ -6,6 +6,12 @@ namespace ItEmperor.Party.Persons;
 
 public class Person : Party
 {
+    public string FirstName { get; private set; }
+
+    public string LastName { get; private set; }
+
+    public List<SimpleAddress> Addresses { get; set; } = new List<SimpleAddress>();
+    
     protected Person() : base()
     {
     }
@@ -15,13 +21,7 @@ public class Person : Party
         FirstName = firstName;
         LastName = lastName;
     }
-
-    public string FirstName { get; private set; }
-
-    public string LastName { get; private set; }
-
-    public List<SimpleAddress> Addresses { get; set; } = new List<SimpleAddress>();
-
+    
     public void AddAddress(
         string Text,
         string City,

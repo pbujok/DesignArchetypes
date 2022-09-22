@@ -2,6 +2,14 @@
 
 public class Placement
 {
+    public Guid Id { get; }
+
+    public DateTimeOffset EffectiveDate { get; private set; }
+
+    public DateTimeOffset? EndDate { get; private set; }
+
+    public Site Site { get; private set; }
+    
     protected Placement()
     {
     }
@@ -13,12 +21,4 @@ public class Placement
         EndDate = endDate;
         Site = site;
     }
-
-    public Guid Id { get; }
-
-    public DateTimeOffset EffectiveDate { get; private set; }
-
-    public DateTimeOffset? EndDate { get; private set; }
-
-    public Site Site { get; private set; }
 }
