@@ -8,7 +8,7 @@ public class Product
 
     public DateTime IntroductionDate { get; private set; }
 
-    public DateTime SupportEndDate { get; private set; }
+    public DateTime? SupportEndDate { get; private set; }
 
     public string? Comment { get; private set; }
 
@@ -16,7 +16,7 @@ public class Product
     {
     }
 
-    public Product(string name, DateTime introductionDate, DateTime supportEndDate, string? comment)
+    public Product(string name, DateTime introductionDate, DateTime? supportEndDate, string? comment)
     {
         Id = Guid.NewGuid();
         Name = name;

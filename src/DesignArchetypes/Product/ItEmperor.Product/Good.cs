@@ -6,8 +6,8 @@ public class Good : Product
     {
     }
 
-    public Good(string name, DateTime introductionDate, DateTime supportEndDate, string? comment) : base(name,
-        introductionDate, supportEndDate, comment)
+    public Good(string name, DateTime introductionDate, DateTime? supportEndDate, string? comment) 
+        : base(name, introductionDate, supportEndDate, comment)
     {
     }
 }

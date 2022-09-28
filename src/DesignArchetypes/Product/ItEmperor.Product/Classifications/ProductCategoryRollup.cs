@@ -8,6 +8,10 @@ public class ProductCategoryRollup
 
     public ProductCategory Child { get; private set; }
 
+    protected ProductCategoryRollup()
+    {
+    }
+
     public ProductCategoryRollup(ProductCategory parent, ProductCategory child)
     {
         Id = Guid.NewGuid();

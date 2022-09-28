@@ -6,8 +6,8 @@ public class Service : Product
     {
     }
 
-    public Service(string name, DateTime introductionDate, DateTime supportEndDate, string? comment) : base(name,
-        introductionDate, supportEndDate, comment)
+    public Service(string name, DateTime introductionDate, DateTime? supportEndDate, string? comment) 
+        : base(name, introductionDate, supportEndDate, comment)
     {
     }
 }
