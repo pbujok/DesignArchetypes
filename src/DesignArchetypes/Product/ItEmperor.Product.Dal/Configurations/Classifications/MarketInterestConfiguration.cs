@@ -11,7 +11,7 @@ public class MarketInterestConfiguration : IEntityTypeConfiguration<MarketIntere
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.ProductCategory)
-            .WithMany()
+            .WithMany(x=>x.MarketInterests)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

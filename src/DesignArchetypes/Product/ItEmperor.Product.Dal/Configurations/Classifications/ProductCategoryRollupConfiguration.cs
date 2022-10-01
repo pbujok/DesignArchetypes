@@ -11,7 +11,7 @@ public class ProductCategoryRollupConfiguration : IEntityTypeConfiguration<Produ
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Parent)
-            .WithMany()
+            .WithMany(x=>x.ProductCategoryParentsRollup)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Child)

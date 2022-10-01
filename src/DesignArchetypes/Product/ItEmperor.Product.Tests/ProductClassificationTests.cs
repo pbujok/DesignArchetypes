@@ -7,8 +7,6 @@ namespace ItEmperor.Product.Tests;
 
 public class ProductClassificationTests
 {
-    private readonly ProductRepository _repo = new ProductRepository();
-
     [Fact]
     public void SaveProductCategory_ValidObject_Saved()
     {
@@ -16,8 +14,6 @@ public class ProductClassificationTests
 
         var product = ProductTestData.Products.Goods.LenSilverstonBook;
         product.AssignCategory(ProductTestData.Categories.Goods.Books, ProductTestData.Date1, null);
-
-        _repo.Add(product);
     }
 
     private static void AddIfNotExists(ProductCategory type)
