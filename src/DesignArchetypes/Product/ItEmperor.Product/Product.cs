@@ -1,7 +1,12 @@
-﻿namespace ItEmperor.Product;
+﻿using ItEmperor.Product.Classifications;
+
+namespace ItEmperor.Product;
 
 public class Product
 {
+    public List<ProductCategoryClassification> ProductCategoryClassification { get; } =
+        new List<ProductCategoryClassification>();
+
     public Guid Id { get; init; }
 
     public string Name { get; private set; }
@@ -11,7 +16,7 @@ public class Product
     public DateTime? SupportEndDate { get; private set; }
 
     public string? Comment { get; private set; }
-
+    
     protected Product()
     {
     }

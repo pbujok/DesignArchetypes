@@ -1,4 +1,6 @@
-﻿namespace ItEmperor.Product;
+﻿using ItEmperor.Product.Classifications;
+
+namespace ItEmperor.Product;
 
 public class Service : Product
 {
@@ -6,7 +8,7 @@ public class Service : Product
     {
     }
 
-    public Service(string name, DateTime introductionDate, DateTime? supportEndDate, string? comment) 
+    public Service(string name, DateTime introductionDate, DateTime? supportEndDate, string? comment)
         : base(name, introductionDate, supportEndDate, comment)
     {
     }

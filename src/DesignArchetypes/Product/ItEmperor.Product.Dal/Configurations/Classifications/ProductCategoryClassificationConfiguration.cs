@@ -11,9 +11,9 @@ public class ProductCategoryClassificationConfiguration : IEntityTypeConfigurati
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Product)
-            .WithMany()
+            .WithMany(x => x.ProductCategoryClassification)
             .OnDelete(DeleteBehavior.NoAction);
-        
+
         builder.HasOne(x => x.ProductCategory)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);

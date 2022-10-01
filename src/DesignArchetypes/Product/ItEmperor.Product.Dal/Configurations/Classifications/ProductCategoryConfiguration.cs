@@ -23,3 +23,17 @@ public class ProductCategoryConfiguration : ProductCategoryConfigurationBase<Pro
         builder.HasKey(x => x.Id);
     }
 }
+
+public class GoodCategoryConfiguration : ProductCategoryConfigurationBase<GoodsCategory>
+{
+    protected override void ConfigureEntity(EntityTypeBuilder<GoodsCategory> builder)
+    {
+    }
+}
+
+public class ServiceCategoryConfiguration : ProductCategoryConfigurationBase<ServicesCategory>
+{
+    protected override void ConfigureEntity(EntityTypeBuilder<ServicesCategory> builder)
+    {
+    }
+}
