@@ -1,4 +1,4 @@
-﻿namespace ItEmperor.Product.Classifications;
+﻿namespace ItEmperor.Product.Classifications.Category;
 
 public class GoodsCategory : ProductCategory
 {

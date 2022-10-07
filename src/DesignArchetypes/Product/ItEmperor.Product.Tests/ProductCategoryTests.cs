@@ -1,4 +1,5 @@
 ﻿using ItEmperor.Product.Classifications;
+using ItEmperor.Product.Classifications.Category;
 using ItEmperor.Product.Dal;
 using Xunit;
 
