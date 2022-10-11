@@ -31,4 +31,18 @@ public class ProductFeatureTests
 
         var interaction = new FeatureInteractionIncompatibility(blueColorFeature, redColorFeature, null);
     }
+    
+    [Fact]
+    public async void DefineProductFeature_DependentFeatures_ValidApplicability()
+    {
+        var mechanicFeature = new ProductFeature("Automatic", ProductFeatureCategory.Mechanism);
+        var redColorFeature = new ProductFeature("Red", ProductFeatureCategory.Color);
+        
+        var quartzFeature = new ProductFeature("Quartz", ProductFeatureCategory.Mechanism);
+        var whiteColorFeature = new ProductFeature("White", ProductFeatureCategory.Color);
+
+        
+        var dependency = new FeatureInteractionDependency(whiteColorFeature, quartzFeature, null);
+        var interactionIncompatibility = new FeatureInteractionIncompatibility(quartzFeature, mechanicFeature, null);
+    }
 }
