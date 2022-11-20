@@ -31,31 +31,8 @@ public class ProductPriceComponentTests
         surcharge.SetPercentValue(1000);
         priceComponents.Add(surcharge);
 
-        Assert.Equal(23507, CalculatePrice(priceComponents, rus));
-        Assert.Equal(2000, CalculatePrice(priceComponents, swiss));
-    }
-
-    private int CalculatePrice(ICollection<PriceComponent> priceComponents, GeoBoundary geoBoundary)
-    {
-        var baseComponent = priceComponents.Single(x => x is BasePrice);
-
-        var price = baseComponent.Price!.Value;
-        var discounts = priceComponents.OfType<DiscountPriceComponent>()
-            .Where(x => x.GeoBoundary == geoBoundary).ToList();
-        foreach (var discount in discounts)
-        {
-            var discountValue = discount.Price.HasValue ? discount.Price.Value : (discount.Percent / 100) * price;
-            price -= discountValue!.Value;
-        }
-
-        var surcharges = priceComponents.OfType<SurchargePriceComponent>()
-            .Where(x => x.GeoBoundary == geoBoundary).ToList();
-        foreach (var surcharge in surcharges)
-        {
-            var surchargeValue = surcharge.Price.HasValue ? surcharge.Price.Value : (surcharge.Percent / 100) * price;
-            price += surchargeValue!.Value;
-        }
-
-        return price;
+        var service = new PriceCalculator();
+        Assert.Equal(23507, service.CalculatePrice(priceComponents, rus));
+        Assert.Equal(2000, service.CalculatePrice(priceComponents, swiss));
     }
 }
