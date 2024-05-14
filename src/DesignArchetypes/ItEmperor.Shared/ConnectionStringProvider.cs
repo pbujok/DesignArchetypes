@@ -4,6 +4,6 @@ public class ConnectionStringProvider : IConnectionStringProvider
 {
     public string Get()
     {
-        return "Server=.;Database=DesignArchetypes;Integrated Security=SSPI;";
+        return "Server=.;Database=DesignArchetypes;Integrated Security=SSPI;TrustServerCertificate=True";
     }
 }
