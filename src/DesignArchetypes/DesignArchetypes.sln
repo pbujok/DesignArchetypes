@@ -18,6 +18,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Product.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItEmperor.Product.Dal", "Product\ItEmperor.Product.Dal\ItEmperor.Product.Dal.csproj", "{F6561F11-EDE4-4504-9593-6AFEB9B99E23}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Laboratory", "Laboratory", "{9BE8E582-2625-4628-B3A0-9662C6AE650E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounting", "Accounting", "{96696499-CCF9-4B02-99A3-7F3DF1DC3CBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HumanResources", "HumanResources", "{CDF1BA5A-0182-47E0-90C6-A5557CE05E10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shipment", "Shipment", "{C586F9AF-E3C4-4156-ACBC-1A683FE831E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manufacture", "Manufacture", "{84CEBAC3-5029-4F5C-99DA-94011EFFD23E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
